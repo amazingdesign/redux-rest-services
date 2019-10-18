@@ -1,10 +1,11 @@
-import makeRestServices from '../src/index'
+import makeRestServices, { crudActions } from '../src/index'
 
 const restServices = makeRestServices([
   {
     name: 'simple',
     url: 'https://example.com/api/simple',
-    transformer: (data) => data
+    transformer: (data) => data,
+    actions: crudActions,
   }
 ])
 

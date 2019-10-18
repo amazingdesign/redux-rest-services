@@ -3,6 +3,7 @@ import slugify from 'slugify'
 
 import makeActions from './makeActions'
 import makeReducers from './makeReducers'
+import makeActionTypes from './makeActionTypes'
 
 const v = new Validator()
 
@@ -24,7 +25,17 @@ const schema = {
       props: {
         name: { type: 'slug' },
         url: { type: "url" },
-        transformer: { type: 'function', optional: true }
+        transformer: { type: 'function', optional: true },
+        actions: {
+          type: 'array',
+          items: {
+            type: 'object',
+            props: {
+              name: { type: 'string' },
+              method: { type: 'string' },
+            }
+          },
+        }
       }
     }
   }
@@ -41,8 +52,11 @@ export default (servicesDeclarations) => {
     throw new Error(JSON.stringify(validationResult))
   }
 
+  const actionTypes = makeActionTypes(servicesDeclarations)
+
   return {
-    actions: makeActions(servicesDeclarations),
-    reducers: makeReducers(servicesDeclarations),
+    actionTypes: actionTypes,
+    actions: makeActions(servicesDeclarations, actionTypes),
+    reducers: makeReducers(servicesDeclarations, actionTypes),
   }
 }

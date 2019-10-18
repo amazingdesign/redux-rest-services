@@ -1,4 +1,4 @@
-import makeRestServices from '../src/index'
+import makeRestServices, { crudActions } from '../src/index'
 
 describe('making object with rest services', () => {
 
@@ -10,7 +10,8 @@ describe('making object with rest services', () => {
     expect(() => makeRestServices([{
       name: 'It is wrong name, it should be an url slug',
       url: 'https://example.com/api/simple',
-      transformer: (data) => data
+      transformer: (data) => data,
+      actions: crudActions,
     }])).toThrow()
   })
 
@@ -18,7 +19,25 @@ describe('making object with rest services', () => {
     expect(() => makeRestServices([{
       name: 'invalid',
       url: 'example.com/api/invalid-url',
-      transformer: (data) => data
+      transformer: (data) => data,
+      actions: crudActions,
+    }])).toThrow()
+  })
+
+  it('throws on no actions passed', () => {
+    expect(() => makeRestServices([{
+      name: 'simple',
+      url: 'https://example.com/api/simple',
+      transformer: (data) => data,
+    }])).toThrow()
+  })
+
+  it('throws on wrong (lack of method and name) actions passed', () => {
+    expect(() => makeRestServices([{
+      name: 'simple',
+      url: 'https://example.com/api/simple',
+      transformer: (data) => data,
+      actions: [ { } ],
     }])).toThrow()
   })
 
@@ -26,6 +45,7 @@ describe('making object with rest services', () => {
     expect(() => makeRestServices([{
       name: 'simple',
       url: 'https://example.com/api/simple',
+      actions: crudActions,
     }])).not.toThrow()
   })
 
@@ -33,7 +53,11 @@ describe('making object with rest services', () => {
     expect(makeRestServices([{
       name: 'simple',
       url: 'https://example.com/api/simple',
+      actions: crudActions,
     }])).toEqual({
+      actionTypes: {
+        simple:  expect.any(Object),
+      },
       actions: {
         simple:  expect.any(Function),
       },
