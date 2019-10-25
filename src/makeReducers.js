@@ -1,5 +1,8 @@
 const makeReducer = (serviceDeclaration) => {
-  return () => { }
+  const initialState = {}
+  return (state = initialState, action) => {
+    return state
+  }
 }
 
 export default (servicesDeclarations, actionTypes) => {
