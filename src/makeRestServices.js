@@ -1,9 +1,11 @@
 import Validator from 'fastest-validator'
 import slugify from 'slugify'
+import 'isomorphic-fetch'
 
 import makeActions from './makeActions'
 import makeReducers from './makeReducers'
 import makeActionTypes from './makeActionTypes'
+import defaultFetchAdapter from './defaultFetchAdapter'
 
 const v = new Validator()
 
@@ -41,7 +43,7 @@ const schema = {
   }
 }
 
-export default (servicesDeclarations) => {
+export default (servicesDeclarations, fetchFunction = defaultFetchAdapter(fetch)) => {
   if (Array.isArray(servicesDeclarations) && servicesDeclarations.length === 0) {
     throw new Error()
   }
@@ -56,7 +58,7 @@ export default (servicesDeclarations) => {
 
   return {
     actionTypes: actionTypes,
-    actions: makeActions(servicesDeclarations, actionTypes),
+    actions: makeActions(servicesDeclarations, actionTypes, fetchFunction),
     reducers: makeReducers(servicesDeclarations, actionTypes),
   }
 }
