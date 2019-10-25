@@ -8,5 +8,8 @@ export default {
       PATCH: { data: 'Some random PATCH response from https://example.com/api/simple' },
       DELETE: { data: 'Some random DELETE response from https://example.com/api/simple' },
     }
+  },
+  error: {
+    URL: 'https://example.com/api/error',
   }
 }

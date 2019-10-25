@@ -2,38 +2,67 @@ import makeRestServices, { crudActionsDeclarations } from '../src/index'
 import mockEndpoints from './mockEndpoints'
 import mockFetch from './mockFetch'
 
-import { createStore, combineReducers, applyMiddleware } from 'redux'
+import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 // SERVICES INIT
 
 const restServices = makeRestServices(
-  [{
-    name: 'simple',
-    url: mockEndpoints.simple.URL,
-    transformer: (data) => data,
-    actionsDeclarations: crudActionsDeclarations,
-  }],
+  [
+    {
+      name: 'simple',
+      url: mockEndpoints.simple.URL,
+      transformer: (data) => data,
+      actionsDeclarations: crudActionsDeclarations,
+    },
+    {
+      name: 'error',
+      url: mockEndpoints.error.URL,
+      transformer: (data) => data,
+      actionsDeclarations: crudActionsDeclarations,
+    }
+  ],
   mockFetch
 )
 
-// STORE INIT
+// MOCK STORE INIT
 
-const reducer = combineReducers({
-  ...restServices.reducers,
-})
-
-export const store = createStore(
-  reducer,
-  applyMiddleware(thunk)
-)
+const middlewares = [thunk]
+const createMockStore = configureStore(middlewares)
+const mockStore = createMockStore()
 
 // TESTS
 
-describe('store shape before calling actions', () => {
+describe('dispatched sync actions for', () => {
 
-  it('should have all declared reducers', () => {
-    expect(true).toBe(true)
+  beforeEach(() => mockStore.clearActions())
+
+  it('success "create" action call', () => {
+    expect.assertions(1)
+
+    return mockStore.dispatch(restServices.actions.simple.create())
+      .then(() => {
+        const expectedActionTypes = mockStore.getActions().map(action => action.type)
+        expect(expectedActionTypes).toEqual([
+          restServices.actionTypes.simple.create.START_FETCHING,
+          restServices.actionTypes.simple.create.RECEIVES_DATA,
+          restServices.actionTypes.simple.create.STOP_FETCHING,
+        ])
+      })
+  })
+
+  it('failed "create" action call', () => {
+    expect.assertions(1)
+
+    return mockStore.dispatch(restServices.actions.error.create())
+      .then(() => {
+        const expectedActionTypes = mockStore.getActions().map(action => action.type)
+        expect(expectedActionTypes).toEqual([
+          restServices.actionTypes.error.create.START_FETCHING,
+          restServices.actionTypes.error.create.ERROR,
+          restServices.actionTypes.error.create.STOP_FETCHING,
+        ])
+      })
   })
 
 })

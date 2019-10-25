@@ -59,6 +59,9 @@ describe('making rest services declarations', () => {
       actionTypes: {
         simple: crudActionsDeclarations.reduce((r, crudAction) => ({ ...r, [crudAction.name]: options.STATES.reduce((r, stateName) => ({ ...r, [stateName]: expect.any(String) }), {}) }), {}),
       },
+      syncActions: {
+        simple: crudActionsDeclarations.reduce((r, crudAction) => ({ ...r, [crudAction.name]: options.STATES.reduce((r, stateName) => ({ ...r, [stateName]: expect.any(Function) }), {}) }), {}),
+      },
       actions: {
         simple: crudActionsDeclarations.reduce((r, crudAction) => ({ ...r, [crudAction.name]: expect.any(Function) }), {}),
       },

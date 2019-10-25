@@ -5,6 +5,7 @@ import 'isomorphic-fetch'
 import makeActions from './makeActions'
 import makeReducers from './makeReducers'
 import makeActionTypes from './makeActionTypes'
+import makeSyncActions from './makeSyncActions'
 import defaultFetchAdapter from './defaultFetchAdapter'
 
 const v = new Validator()
@@ -55,10 +56,12 @@ export default (servicesDeclarations, fetchFunction = defaultFetchAdapter(fetch)
   }
 
   const actionTypes = makeActionTypes(servicesDeclarations)
+  const syncActions = makeSyncActions(servicesDeclarations, actionTypes)
 
   return {
     actionTypes: actionTypes,
-    actions: makeActions(servicesDeclarations, actionTypes, fetchFunction),
+    syncActions: syncActions,
+    actions: makeActions(servicesDeclarations, actionTypes, syncActions, fetchFunction),
     reducers: makeReducers(servicesDeclarations, actionTypes),
   }
 }
