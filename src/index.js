@@ -1,3 +1,3 @@
 export { default } from './makeRestServices'
 
-export { default as crudActions } from './crudActions'
+export { default as crudActionsDeclarations } from './crudActionsDeclarations'

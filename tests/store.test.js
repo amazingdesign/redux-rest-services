@@ -1,4 +1,4 @@
-import makeRestServices, { crudActions } from '../src/index'
+import makeRestServices, { crudActionsDeclarations } from '../src/index'
 import mockEndpoints from './mockEndpoints'
 
 const restServices = makeRestServices([
@@ -6,7 +6,7 @@ const restServices = makeRestServices([
     name: 'simple',
     url: mockEndpoints.simple.URL,
     transformer: (data) => data,
-    actions: crudActions,
+    actionsDeclarations: crudActionsDeclarations,
   }
 ])
 

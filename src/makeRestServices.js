@@ -26,7 +26,7 @@ const schema = {
         name: { type: 'slug' },
         url: { type: "url" },
         transformer: { type: 'function', optional: true },
-        actions: {
+        actionsDeclarations: {
           type: 'array',
           items: {
             type: 'object',

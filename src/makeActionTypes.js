@@ -5,10 +5,10 @@ const makeActionType = (serviceName, methodName) => {
 }
 
 const makeActionTypes = (serviceDeclaration) => {
-  return serviceDeclaration.actions.reduce(
-    (r, action, i) => ({
+  return serviceDeclaration.actionsDeclarations.reduce(
+    (r, actionDeclaration, i) => ({
       ...r,
-      [action.name]: makeActionType(serviceDeclaration.name, action),
+      [actionDeclaration.name]: makeActionType(serviceDeclaration.name, actionDeclaration.method),
     }),
     {}
   )

@@ -1,7 +1,7 @@
-import makeRestServices, { crudActions } from '../src/index'
+import makeRestServices, { crudActionsDeclarations } from '../src/index'
 import mockEndpoints from './mockEndpoints'
 
-describe('making object with rest services', () => {
+describe('making rest services declarations', () => {
 
   it('throws on no services passed', () => {
     expect(() => makeRestServices([])).toThrow()
@@ -12,7 +12,7 @@ describe('making object with rest services', () => {
       name: 'It is wrong name, it should be an url slug',
       url: mockEndpoints.simple.URL,
       transformer: (data) => data,
-      actions: crudActions,
+      actionsDeclarations: crudActionsDeclarations,
     }])).toThrow()
   })
 
@@ -21,7 +21,7 @@ describe('making object with rest services', () => {
       name: 'invalid',
       url: 'example.com/api/invalid-url',
       transformer: (data) => data,
-      actions: crudActions,
+      actionsDeclarations: crudActionsDeclarations,
     }])).toThrow()
   })
 
@@ -38,7 +38,7 @@ describe('making object with rest services', () => {
       name: 'simple',
       url: mockEndpoints.simple.URL,
       transformer: (data) => data,
-      actions: [ { } ],
+      actionsDeclarations: [{}],
     }])).toThrow()
   })
 
@@ -46,7 +46,7 @@ describe('making object with rest services', () => {
     expect(() => makeRestServices([{
       name: 'simple',
       url: mockEndpoints.simple.URL,
-      actions: crudActions,
+      actionsDeclarations: crudActionsDeclarations,
     }])).not.toThrow()
   })
 
@@ -54,16 +54,16 @@ describe('making object with rest services', () => {
     expect(makeRestServices([{
       name: 'simple',
       url: mockEndpoints.simple.URL,
-      actions: crudActions,
+      actionsDeclarations: crudActionsDeclarations,
     }])).toEqual({
       actionTypes: {
-        simple:  expect.any(Object),
+        simple: crudActionsDeclarations.reduce((r, crudAction) => ({ ...r, [crudAction.name]: expect.any(String) }), {}),
       },
       actions: {
-        simple:  expect.any(Function),
+        simple: crudActionsDeclarations.reduce((r, crudAction) => ({ ...r, [crudAction.name]: expect.any(Function) }), {}),
       },
       reducers: {
-        simple:  expect.any(Function),
+        simple: expect.any(Function),
       },
     })
   })
