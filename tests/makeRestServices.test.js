@@ -1,4 +1,4 @@
-import makeRestServices, { crudActionsDeclarations } from '../src/index'
+import makeRestServices, { crudActionsDeclarations, options} from '../src/index'
 import mockEndpoints from './mockEndpoints'
 
 describe('making rest services declarations', () => {
@@ -57,7 +57,7 @@ describe('making rest services declarations', () => {
       actionsDeclarations: crudActionsDeclarations,
     }])).toEqual({
       actionTypes: {
-        simple: crudActionsDeclarations.reduce((r, crudAction) => ({ ...r, [crudAction.name]: expect.any(String) }), {}),
+        simple: crudActionsDeclarations.reduce((r, crudAction) => ({ ...r, [crudAction.name]: options.STATES.reduce((r, stateName) => ({ ...r, [stateName]: expect.any(String) }), {}) }), {}),
       },
       actions: {
         simple: crudActionsDeclarations.reduce((r, crudAction) => ({ ...r, [crudAction.name]: expect.any(Function) }), {}),

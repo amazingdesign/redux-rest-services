@@ -1,14 +1,24 @@
-const PREFIX = '@redux-rest-services'
+import { PREFIX, STATES } from './options'
 
-const makeActionType = (serviceName, methodName) => {
-  return `${PREFIX}/${serviceName}/${methodName}`
+const makeActionType = (serviceName, actionName, stateName) => {
+  return `${PREFIX}/${serviceName}/${actionName}/${stateName}`
 }
 
-const makeActionTypes = (serviceDeclaration) => {
+const makeActionTypesForActionName = (serviceName, actionName) => {
+  return STATES.reduce(
+    (r, stateName, i) => ({
+      ...r,
+      [stateName]: makeActionType(serviceName, actionName, stateName),
+    }),
+    {}
+  )
+}
+
+const makeActionTypesForServiceName = (serviceDeclaration) => {
   return serviceDeclaration.actionsDeclarations.reduce(
     (r, actionDeclaration, i) => ({
       ...r,
-      [actionDeclaration.name]: makeActionType(serviceDeclaration.name, actionDeclaration.method),
+      [actionDeclaration.name]: makeActionTypesForActionName(serviceDeclaration.name, actionDeclaration.name),
     }),
     {}
   )
@@ -18,7 +28,7 @@ export default (servicesDeclarations) => {
   return servicesDeclarations.reduce(
     (r, serviceDeclaration, i) => ({
       ...r,
-      [serviceDeclaration.name]: makeActionTypes(serviceDeclaration),
+      [serviceDeclaration.name]: makeActionTypesForServiceName(serviceDeclaration),
     }),
     {}
   )
