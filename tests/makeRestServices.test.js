@@ -1,4 +1,5 @@
 import makeRestServices, { crudActions } from '../src/index'
+import mockEndpoints from './mockEndpoints'
 
 describe('making object with rest services', () => {
 
@@ -9,7 +10,7 @@ describe('making object with rest services', () => {
   it('throws on wrong service name passed', () => {
     expect(() => makeRestServices([{
       name: 'It is wrong name, it should be an url slug',
-      url: 'https://example.com/api/simple',
+      url: mockEndpoints.simple.URL,
       transformer: (data) => data,
       actions: crudActions,
     }])).toThrow()
@@ -27,7 +28,7 @@ describe('making object with rest services', () => {
   it('throws on no actions passed', () => {
     expect(() => makeRestServices([{
       name: 'simple',
-      url: 'https://example.com/api/simple',
+      url: mockEndpoints.simple.URL,
       transformer: (data) => data,
     }])).toThrow()
   })
@@ -35,7 +36,7 @@ describe('making object with rest services', () => {
   it('throws on wrong (lack of method and name) actions passed', () => {
     expect(() => makeRestServices([{
       name: 'simple',
-      url: 'https://example.com/api/simple',
+      url: mockEndpoints.simple.URL,
       transformer: (data) => data,
       actions: [ { } ],
     }])).toThrow()
@@ -44,7 +45,7 @@ describe('making object with rest services', () => {
   it('do not throws on no transformer passed', () => {
     expect(() => makeRestServices([{
       name: 'simple',
-      url: 'https://example.com/api/simple',
+      url: mockEndpoints.simple.URL,
       actions: crudActions,
     }])).not.toThrow()
   })
@@ -52,7 +53,7 @@ describe('making object with rest services', () => {
   it('returns object with reducers and actions', () => {
     expect(makeRestServices([{
       name: 'simple',
-      url: 'https://example.com/api/simple',
+      url: mockEndpoints.simple.URL,
       actions: crudActions,
     }])).toEqual({
       actionTypes: {

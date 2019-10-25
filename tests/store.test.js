@@ -1,9 +1,10 @@
 import makeRestServices, { crudActions } from '../src/index'
+import mockEndpoints from './mockEndpoints'
 
 const restServices = makeRestServices([
   {
     name: 'simple',
-    url: 'https://example.com/api/simple',
+    url: mockEndpoints.simple.URL,
     transformer: (data) => data,
     actions: crudActions,
   }
