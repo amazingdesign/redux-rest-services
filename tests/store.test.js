@@ -2,7 +2,7 @@ import makeRestServices, { crudActionsDeclarations } from '../src/index'
 import mockEndpoints from './mockEndpoints'
 import mockFetch from './mockFetch'
 
-import configureStore from 'redux-mock-store'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
 // SERVICES INIT
@@ -25,44 +25,144 @@ const restServices = makeRestServices(
   mockFetch
 )
 
-// MOCK STORE INIT
+// STORE INIT
 
-const middlewares = [thunk]
-const createMockStore = configureStore(middlewares)
-const mockStore = createMockStore()
+const reducer = combineReducers({
+  ...restServices.reducers
+})
+
+const store = createStore(
+  reducer,
+  applyMiddleware(thunk)
+)
 
 // TESTS
 
-describe('dispatched sync actions for', () => {
-
-  beforeEach(() => mockStore.clearActions())
+describe('updates state properly for ', () => {
 
   it('success "create" action call', () => {
-    expect.assertions(1)
+    expect.assertions(9)
+    
+    const SERVICE_NAME = 'simple'
+    const ACTION_NAME = 'create'
 
-    return mockStore.dispatch(restServices.actions.simple.create())
-      .then(() => {
-        const expectedActionTypes = mockStore.getActions().map(action => action.type)
-        expect(expectedActionTypes).toEqual([
-          restServices.actionTypes.simple.create.START_FETCHING,
-          restServices.actionTypes.simple.create.RECEIVES_DATA,
-          restServices.actionTypes.simple.create.STOP_FETCHING,
-        ])
-      })
+    const getState = () => store.getState()[SERVICE_NAME]
+
+    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME]())
+
+    expect(getState().isLoading).toBe(true)
+    expect(getState()[ACTION_NAME].isLoading).toBe(true)
+    expect(getState()[ACTION_NAME].isError).toBe(false)
+    expect(getState()[ACTION_NAME].touched).not.toBe(null)
+
+    return promise.then(() => {
+      expect(getState().isLoading).toBe(false)
+      expect(getState()[ACTION_NAME].isLoading).toBe(false)
+      expect(getState()[ACTION_NAME].isError).toBe(false)
+
+      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints.simple.responses.POST)
+      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints.simple.responses.POST)
+    })
   })
 
-  it('failed "create" action call', () => {
-    expect.assertions(1)
+  it('success "get" action call', () => {
+    expect.assertions(9)
+    
+    const SERVICE_NAME = 'simple'
+    const ACTION_NAME = 'get'
 
-    return mockStore.dispatch(restServices.actions.error.create())
-      .then(() => {
-        const expectedActionTypes = mockStore.getActions().map(action => action.type)
-        expect(expectedActionTypes).toEqual([
-          restServices.actionTypes.error.create.START_FETCHING,
-          restServices.actionTypes.error.create.ERROR,
-          restServices.actionTypes.error.create.STOP_FETCHING,
-        ])
-      })
+    const getState = () => store.getState()[SERVICE_NAME]
+
+    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME]())
+
+    expect(getState().isLoading).toBe(true)
+    expect(getState()[ACTION_NAME].isLoading).toBe(true)
+    expect(getState()[ACTION_NAME].isError).toBe(false)
+    expect(getState()[ACTION_NAME].touched).not.toBe(null)
+
+    return promise.then(() => {
+      expect(getState().isLoading).toBe(false)
+      expect(getState()[ACTION_NAME].isLoading).toBe(false)
+      expect(getState()[ACTION_NAME].isError).toBe(false)
+
+      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints.simple.responses.GET)
+      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints.simple.responses.GET)
+    })
+  })
+
+  it('success "find" action call', () => {
+    expect.assertions(9)
+    
+    const SERVICE_NAME = 'simple'
+    const ACTION_NAME = 'find'
+
+    const getState = () => store.getState()[SERVICE_NAME]
+
+    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME]())
+
+    expect(getState().isLoading).toBe(true)
+    expect(getState()[ACTION_NAME].isLoading).toBe(true)
+    expect(getState()[ACTION_NAME].isError).toBe(false)
+    expect(getState()[ACTION_NAME].touched).not.toBe(null)
+
+    return promise.then(() => {
+      expect(getState().isLoading).toBe(false)
+      expect(getState()[ACTION_NAME].isLoading).toBe(false)
+      expect(getState()[ACTION_NAME].isError).toBe(false)
+
+      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints.simple.responses.GET)
+      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints.simple.responses.GET)
+    })
+  })
+
+  it('success "update" action call', () => {
+    expect.assertions(9)
+    
+    const SERVICE_NAME = 'simple'
+    const ACTION_NAME = 'update'
+
+    const getState = () => store.getState()[SERVICE_NAME]
+
+    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME]())
+
+    expect(getState().isLoading).toBe(true)
+    expect(getState()[ACTION_NAME].isLoading).toBe(true)
+    expect(getState()[ACTION_NAME].isError).toBe(false)
+    expect(getState()[ACTION_NAME].touched).not.toBe(null)
+
+    return promise.then(() => {
+      expect(getState().isLoading).toBe(false)
+      expect(getState()[ACTION_NAME].isLoading).toBe(false)
+      expect(getState()[ACTION_NAME].isError).toBe(false)
+
+      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints.simple.responses.PUT)
+      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints.simple.responses.PUT)
+    })
+  })
+
+  it('success "delete" action call', () => {
+    expect.assertions(9)
+    
+    const SERVICE_NAME = 'simple'
+    const ACTION_NAME = 'delete'
+
+    const getState = () => store.getState()[SERVICE_NAME]
+
+    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME]())
+
+    expect(getState().isLoading).toBe(true)
+    expect(getState()[ACTION_NAME].isLoading).toBe(true)
+    expect(getState()[ACTION_NAME].isError).toBe(false)
+    expect(getState()[ACTION_NAME].touched).not.toBe(null)
+
+    return promise.then(() => {
+      expect(getState().isLoading).toBe(false)
+      expect(getState()[ACTION_NAME].isLoading).toBe(false)
+      expect(getState()[ACTION_NAME].isError).toBe(false)
+
+      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints.simple.responses.DELETE)
+      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints.simple.responses.DELETE)
+    })
   })
 
 })

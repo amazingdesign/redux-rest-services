@@ -1,6 +1,6 @@
 import mockEndpoints from './mockEndpoints'
 
-export default (url, opt) => {
+export default (url, opt = { method: 'GET' }) => {
   switch (url) {
     case mockEndpoints.simple.URL:
       return Promise.resolve(mockEndpoints.simple.responses[opt.method])

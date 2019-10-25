@@ -5,6 +5,7 @@ const makeSyncAction = (serviceDeclaration, actionDeclaration, type) => (data) =
   data,
   serviceDeclaration,
   actionDeclaration,
+  timestamp: Date.now(),
 })
 
 const makeSyncActionsForActionDeclaration = (serviceDeclaration, actionDeclaration, actionTypesForActionDeclaration) => {

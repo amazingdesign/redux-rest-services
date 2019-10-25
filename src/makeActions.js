@@ -3,7 +3,7 @@ const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionD
     dispatch(syncActionsForActionDeclaration.START_FETCHING())
 
     const actionDeclarationWithoutName = Object.entries(actionDeclaration).reduce(
-      (r, { key, val }) => key !== 'name' ? { ...r, [key]: val } : r,
+      (r, [key, val]) => key !== 'name' ? { ...r, [key]: val } : r,
       {}
     )
 
@@ -12,10 +12,10 @@ const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionD
       actionDeclarationWithoutName,
     )
       .then((data) => {
-        dispatch(syncActionsForActionDeclaration.RECEIVES_DATA())
+        dispatch(syncActionsForActionDeclaration.RECEIVES_DATA(data))
       })
       .catch((error) => {
-        dispatch(syncActionsForActionDeclaration.ERROR())
+        dispatch(syncActionsForActionDeclaration.ERROR(error))
       })
       .finally(() => {
         dispatch(syncActionsForActionDeclaration.STOP_FETCHING())
