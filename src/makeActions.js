@@ -31,7 +31,12 @@ const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionD
       fetchOptionsFromActionDeclarationAndActionCall,
     )
       .then((data) => {
-        dispatch(syncActionsForActionDeclaration.RECEIVES_DATA(data))
+        let dataToDispatch = data
+        if(typeof serviceDeclaration.transformer === 'function'){
+          const transformer = serviceDeclaration.transformer
+          dataToDispatch = transformer(data)
+        }
+        dispatch(syncActionsForActionDeclaration.RECEIVES_DATA(dataToDispatch))
       })
       .catch((error) => {
         dispatch(syncActionsForActionDeclaration.ERROR(error))

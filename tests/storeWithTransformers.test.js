@@ -12,31 +12,37 @@ const restServices = makeRestServices(
     {
       name: 'simple',
       url: mockEndpoints.simple.URL,
+      transformer: (data) => data && data.data,
       actionsDeclarations: crudActionsDeclarations,
     },
     {
       name: 'simpleWithId',
       url: mockEndpoints.simpleWithId.URL,
+      transformer: (data) => data && data.data,
       actionsDeclarations: crudActionsDeclarations,
     },
     {
       name: 'simpleWithIdAndOtherParam',
       url: mockEndpoints.simpleWithIdAndOtherParam.URL,
+      transformer: (data) => data && data.data,
       actionsDeclarations: crudActionsDeclarations,
     },
     {
       name: 'simpleWithQueryString',
       url: mockEndpoints.simpleWithQueryString.URL,
+      transformer: (data) => data && data.data,
       actionsDeclarations: crudActionsDeclarations,
     },
     {
       name: 'simpleWithIdAndQueryString',
       url: mockEndpoints.simpleWithIdAndQueryString.URL,
+      transformer: (data) => data && data.data,
       actionsDeclarations: crudActionsDeclarations,
     },
     {
       name: 'error',
       url: mockEndpoints.error.URL,
+      transformer: (data) => data && data.data,
       actionsDeclarations: crudActionsDeclarations,
     }
   ],
@@ -71,8 +77,8 @@ const dispatchActionAndCheckStateChanges = (SERVICE_NAME, ACTION_NAME, METHOD_NA
     expect(getState()[ACTION_NAME].isLoading).toBe(false)
     expect(getState()[ACTION_NAME].isError).toBe(false)
 
-    expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses[METHOD_NAME])
-    expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses[METHOD_NAME])
+    expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses[METHOD_NAME].data)
+    expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses[METHOD_NAME].data)
   })
 }
 
