@@ -1,5 +1,9 @@
+import qs from 'qs'
+
+import replaceParamsInURL from './replaceParamsInURL'
+
 const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionDeclaration, syncActionsForActionDeclaration, fetchFunction) => {
-  return () => (dispatch, getState) => {
+  return (params, fetchOptions) => (dispatch, getState) => {
     dispatch(syncActionsForActionDeclaration.START_FETCHING())
 
     const actionDeclarationWithoutName = Object.entries(actionDeclaration).reduce(
@@ -7,9 +11,22 @@ const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionD
       {}
     )
 
+    const fetchOptionsFromActionDeclarationAndActionCall = {
+      ...actionDeclarationWithoutName,
+      ...fetchOptions,
+    }
+
+    const url = serviceDeclaration.url
+    const { url: urlWithParamsFilled, params: paramsWithoutUrlOnes } = replaceParamsInURL(
+      url,
+      params,
+    )
+
+    const urlWithParamsFilledAndQueryString = urlWithParamsFilled + qs.stringify(paramsWithoutUrlOnes)
+
     return fetchFunction(
-      serviceDeclaration.url,
-      actionDeclarationWithoutName,
+      urlWithParamsFilledAndQueryString,
+      fetchOptionsFromActionDeclarationAndActionCall,
     )
       .then((data) => {
         dispatch(syncActionsForActionDeclaration.RECEIVES_DATA(data))
