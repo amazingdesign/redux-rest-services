@@ -22,7 +22,9 @@ const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionD
       params,
     )
 
-    const urlWithParamsFilledAndQueryString = urlWithParamsFilled + qs.stringify(paramsWithoutUrlOnes)
+    const queryString = qs.stringify(paramsWithoutUrlOnes)
+
+    const urlWithParamsFilledAndQueryString = urlWithParamsFilled + (queryString ? '?' + queryString : '')
 
     return fetchFunction(
       urlWithParamsFilledAndQueryString,
