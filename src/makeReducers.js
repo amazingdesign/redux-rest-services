@@ -5,7 +5,7 @@ const makeReducer = (serviceDeclaration, actionTypesForService) => {
   const initialState = {
     ...SERVICE_INITIAL_STATE,
     ...serviceDeclaration.actionsDeclarations.reduce(
-      (r, actionDeclaration) => ({ ...r, [actionDeclaration.name]: ACTION_INITIAL_STATE }),
+      (r, actionDeclaration) => ({ ...r, [actionDeclaration.name]: { ...ACTION_INITIAL_STATE } }),
       {}
     )
   }
@@ -32,6 +32,7 @@ const makeReducer = (serviceDeclaration, actionTypesForService) => {
             ...state[actionName],
             isLoading: true,
             isError: false,
+            error: null,
             touched: action.timestamp,
           }
         }
@@ -41,7 +42,6 @@ const makeReducer = (serviceDeclaration, actionTypesForService) => {
           [actionName]: {
             ...state[actionName],
             isLoading: false,
-            isError: false,
             touched: action.timestamp,
           }
         }
@@ -62,6 +62,7 @@ const makeReducer = (serviceDeclaration, actionTypesForService) => {
             ...state[actionName],
             isLoading: false,
             isError: true,
+            error: action.data,
             touched: action.timestamp,
           }
         }

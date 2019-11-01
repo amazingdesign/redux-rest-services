@@ -13,7 +13,7 @@ export default (url, opt = { method: 'GET' }) => {
     case mockEndpoints.simpleWithIdAndQueryString.URLWithParams:
       return Promise.resolve(mockEndpoints.simpleWithIdAndQueryString.responses[opt.method])
     case mockEndpoints.error.URL:
-      return Promise.reject('Error URL called')
+      return Promise.reject(mockEndpoints.error.error)
     default:
       return Promise.reject('URL not resolved!')
   }

@@ -40,6 +40,7 @@ const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionD
       })
       .catch((error) => {
         dispatch(syncActionsForActionDeclaration.ERROR(error))
+        return Promise.reject(error)
       })
       .finally(() => {
         dispatch(syncActionsForActionDeclaration.STOP_FETCHING())

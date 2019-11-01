@@ -55,7 +55,7 @@ describe('dispatched sync actions for', () => {
     expect.assertions(1)
 
     return mockStore.dispatch(restServices.actions.error.create())
-      .then(() => {
+      .catch(() => {
         const expectedActionTypes = mockStore.getActions().map(action => action.type)
         expect(expectedActionTypes).toEqual([
           restServices.actionTypes.error.create.START_FETCHING,

@@ -55,5 +55,6 @@ export default {
   },
   error: {
     URL: 'https://example.com/api/error',
+    error: 'Error URL called',
   }
 }

@@ -64,22 +64,24 @@ const dispatchActionAndCheckStateChanges = (SERVICE_NAME, ACTION_NAME, METHOD_NA
   expect(getState().isLoading).toBe(true)
   expect(getState()[ACTION_NAME].isLoading).toBe(true)
   expect(getState()[ACTION_NAME].isError).toBe(false)
+  expect(getState()[ACTION_NAME].error).toBe(null)
   expect(getState()[ACTION_NAME].touched).not.toBe(null)
 
   return promise.then(() => {
     expect(getState().isLoading).toBe(false)
     expect(getState()[ACTION_NAME].isLoading).toBe(false)
     expect(getState()[ACTION_NAME].isError).toBe(false)
+    expect(getState()[ACTION_NAME].error).toBe(null)
 
     expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses[METHOD_NAME])
     expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses[METHOD_NAME])
   })
 }
 
-describe('updates state properly for ', () => {
+describe('updates state properly for success', () => {
 
-  it('success "create" action call', () => {
-    expect.assertions(9)
+  it('"create" action call', () => {
+    expect.assertions(11)
 
     const SERVICE_NAME = 'simple'
     const ACTION_NAME = 'create'
@@ -88,8 +90,8 @@ describe('updates state properly for ', () => {
     return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME)
   })
 
-  it('success "get" action call', () => {
-    expect.assertions(9)
+  it('"get" action call', () => {
+    expect.assertions(11)
 
     const SERVICE_NAME = 'simple'
     const ACTION_NAME = 'get'
@@ -98,8 +100,8 @@ describe('updates state properly for ', () => {
     return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME)
   })
 
-  it('success "find" action call', () => {
-    expect.assertions(9)
+  it('"find" action call', () => {
+    expect.assertions(11)
 
     const SERVICE_NAME = 'simple'
     const ACTION_NAME = 'find'
@@ -108,8 +110,8 @@ describe('updates state properly for ', () => {
     return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME)
   })
 
-  it('success "update" action call', () => {
-    expect.assertions(9)
+  it('"update" action call', () => {
+    expect.assertions(11)
 
     const SERVICE_NAME = 'simple'
     const ACTION_NAME = 'update'
@@ -118,8 +120,8 @@ describe('updates state properly for ', () => {
     return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME)
   })
 
-  it('success "delete" action call', () => {
-    expect.assertions(9)
+  it('"delete" action call', () => {
+    expect.assertions(11)
 
     const SERVICE_NAME = 'simple'
     const ACTION_NAME = 'delete'
@@ -128,8 +130,8 @@ describe('updates state properly for ', () => {
     return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME)
   })
 
-  it('success "get" action call with one param', () => {
-    expect.assertions(9)
+  it('"get" action call with one param', () => {
+    expect.assertions(11)
 
     const SERVICE_NAME = 'simpleWithId'
     const ACTION_NAME = 'get'
@@ -139,8 +141,8 @@ describe('updates state properly for ', () => {
     return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME, PARAMS)
   })
 
-  it('success "get" action call with two params', () => {
-    expect.assertions(9)
+  it('"get" action call with two params', () => {
+    expect.assertions(11)
 
     const SERVICE_NAME = 'simpleWithIdAndOtherParam'
     const ACTION_NAME = 'get'
@@ -150,8 +152,8 @@ describe('updates state properly for ', () => {
     return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME, PARAMS)
   })
 
-  it('success "get" action call with query string', () => {
-    expect.assertions(9)
+  it('"get" action call with query string', () => {
+    expect.assertions(11)
 
     const SERVICE_NAME = 'simpleWithQueryString'
     const ACTION_NAME = 'get'
@@ -161,8 +163,8 @@ describe('updates state properly for ', () => {
     return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME, PARAMS)
   })
 
-  it('success "get" action call with query string and param', () => {
-    expect.assertions(9)
+  it('"get" action call with query string and param', () => {
+    expect.assertions(11)
 
     const SERVICE_NAME = 'simpleWithIdAndQueryString'
     const ACTION_NAME = 'get'
@@ -172,4 +174,38 @@ describe('updates state properly for ', () => {
     return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME, PARAMS)
   })
 
+})
+
+const dispatchActionAndCheckStateChangesForError = (SERVICE_NAME, ACTION_NAME, METHOD_NAME, PRAMS) => {
+  const getState = () => store.getState()[SERVICE_NAME]
+
+  const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME](PRAMS))
+
+  expect(getState().isLoading).toBe(true)
+  expect(getState()[ACTION_NAME].isLoading).toBe(true)
+  expect(getState()[ACTION_NAME].isError).toBe(false)
+  expect(getState()[ACTION_NAME].error).toBe(null)
+  expect(getState()[ACTION_NAME].touched).not.toBe(null)
+
+
+  return promise.catch(() => {    
+    expect(getState().isLoading).toBe(false)
+    expect(getState().isError).toBe(true)
+    expect(getState()[ACTION_NAME].isLoading).toBe(false)
+    expect(getState()[ACTION_NAME].isError).toBe(true)
+
+    expect(getState()[ACTION_NAME].error).toEqual(mockEndpoints[SERVICE_NAME].error)
+  })
+}
+
+describe('updates state properly for error', () => {
+  it('"create" action call', () => {
+    expect.assertions(10)
+
+    const SERVICE_NAME = 'error'
+    const ACTION_NAME = 'get'
+    const METHOD_NAME = 'GET'
+
+    return dispatchActionAndCheckStateChangesForError(SERVICE_NAME, ACTION_NAME, METHOD_NAME)
+  })
 })
