@@ -7,10 +7,12 @@ export default (url, params) => {
   for (const match of matchIterator) {
     const paramName = match[1]
 
-    url = url.replace(':' + paramName, paramsCopy && paramsCopy[paramName])
 
     if (paramsCopy && paramsCopy[paramName]) {
+      url = url.replace(':' + paramName, paramsCopy && paramsCopy[paramName])
       delete paramsCopy[paramName]
+    } else {
+      url = url.replace('/:' + paramName, '')
     }
   }
 

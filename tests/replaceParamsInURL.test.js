@@ -77,7 +77,7 @@ describe('do nothing', () => {
 
 })
 
-describe('adds undefined', () => {
+describe('removes params', () => {
 
   it('when there are URL params but arent in object', () => {
     const {url, params} = replaceParamsInURL(
@@ -85,7 +85,7 @@ describe('adds undefined', () => {
       { }
     )
 
-    expect(url).toBe('https://google.com/undefined')
+    expect(url).toBe('https://google.com')
     expect(params).toEqual({})
   })
 
@@ -94,7 +94,7 @@ describe('adds undefined', () => {
       'https://google.com/:id'
     )
 
-    expect(url).toBe('https://google.com/undefined')
+    expect(url).toBe('https://google.com')
     expect(params).toBe(undefined)
   })
 
