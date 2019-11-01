@@ -80,7 +80,7 @@ const dispatchActionAndCheckStateChanges = (SERVICE_NAME, ACTION_NAME, METHOD_NA
     expect(getState()[ACTION_NAME].error).toBe(null)
 
     expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses[METHOD_NAME].data)
-    expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses[METHOD_NAME].data)
+    expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses[METHOD_NAME])
   })
 }
 

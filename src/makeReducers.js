@@ -51,7 +51,7 @@ const makeReducer = (serviceDeclaration, actionTypesForService) => {
           [actionName]: {
             ...state[actionName],
             data: action.data,
-            rawData: action.data,
+            rawData: action.rawData,
             touched: action.timestamp,
           }
         }

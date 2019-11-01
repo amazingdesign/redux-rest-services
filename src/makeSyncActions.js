@@ -1,8 +1,9 @@
 import { STATES } from './options'
 
-const makeSyncAction = (serviceDeclaration, actionDeclaration, type) => (data) => ({
+const makeSyncAction = (serviceDeclaration, actionDeclaration, type) => (data, rawData) => ({
   type,
   data,
+  rawData,
   serviceDeclaration,
   actionDeclaration,
   timestamp: Date.now(),

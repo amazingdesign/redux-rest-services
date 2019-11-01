@@ -30,13 +30,13 @@ const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionD
       urlWithParamsFilledAndQueryString,
       fetchOptionsFromActionDeclarationAndActionCall,
     )
-      .then((data) => {
-        let dataToDispatch = data
+      .then((rawData) => {
+        let data = rawData
         if(typeof serviceDeclaration.transformer === 'function'){
           const transformer = serviceDeclaration.transformer
-          dataToDispatch = transformer(data, actionDeclaration)
+          data = transformer(rawData, actionDeclaration)
         }
-        dispatch(syncActionsForActionDeclaration.RECEIVES_DATA(dataToDispatch))
+        dispatch(syncActionsForActionDeclaration.RECEIVES_DATA(data, rawData))
       })
       .catch((error) => {
         dispatch(syncActionsForActionDeclaration.ERROR(error))

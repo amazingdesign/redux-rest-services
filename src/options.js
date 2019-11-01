@@ -1,4 +1,4 @@
-export const PREFIX = '@redux-rest-services'
+export const PREFIX = '@rrs'
 export const STATES = ['START_FETCHING', 'STOP_FETCHING', 'ERROR', 'RECEIVES_DATA']
 
 export const SERVICE_INITIAL_STATE = {
@@ -11,8 +11,8 @@ export const ACTION_INITIAL_STATE = {
   isLoading: false,
   isError: false,
   touched: null,
-  data: {},
-  rawData: {},
+  data: null,
+  rawData: null,
 }
 
 export default {
