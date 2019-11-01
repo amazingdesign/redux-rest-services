@@ -34,7 +34,7 @@ const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionD
         let dataToDispatch = data
         if(typeof serviceDeclaration.transformer === 'function'){
           const transformer = serviceDeclaration.transformer
-          dataToDispatch = transformer(data)
+          dataToDispatch = transformer(data, actionDeclaration)
         }
         dispatch(syncActionsForActionDeclaration.RECEIVES_DATA(dataToDispatch))
       })
