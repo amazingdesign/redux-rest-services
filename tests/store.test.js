@@ -62,6 +62,26 @@ const store = createStore(
 
 // TESTS
 
+const dispatchActionAndCheckStateChanges = (SERVICE_NAME, ACTION_NAME, METHOD_NAME, PRAMS) => {
+  const getState = () => store.getState()[SERVICE_NAME]
+
+  const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME](PRAMS))
+
+  expect(getState().isLoading).toBe(true)
+  expect(getState()[ACTION_NAME].isLoading).toBe(true)
+  expect(getState()[ACTION_NAME].isError).toBe(false)
+  expect(getState()[ACTION_NAME].touched).not.toBe(null)
+
+  return promise.then(() => {
+    expect(getState().isLoading).toBe(false)
+    expect(getState()[ACTION_NAME].isLoading).toBe(false)
+    expect(getState()[ACTION_NAME].isError).toBe(false)
+
+    expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses[METHOD_NAME])
+    expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses[METHOD_NAME])
+  })
+}
+
 describe('updates state properly for ', () => {
 
   it('success "create" action call', () => {
@@ -69,24 +89,9 @@ describe('updates state properly for ', () => {
 
     const SERVICE_NAME = 'simple'
     const ACTION_NAME = 'create'
+    const METHOD_NAME = 'POST'
 
-    const getState = () => store.getState()[SERVICE_NAME]
-
-    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME]())
-
-    expect(getState().isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isError).toBe(false)
-    expect(getState()[ACTION_NAME].touched).not.toBe(null)
-
-    return promise.then(() => {
-      expect(getState().isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isError).toBe(false)
-
-      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses.POST)
-      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses.POST)
-    })
+    return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME)
   })
 
   it('success "get" action call', () => {
@@ -94,24 +99,9 @@ describe('updates state properly for ', () => {
 
     const SERVICE_NAME = 'simple'
     const ACTION_NAME = 'get'
+    const METHOD_NAME = 'GET'
 
-    const getState = () => store.getState()[SERVICE_NAME]
-
-    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME]())
-
-    expect(getState().isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isError).toBe(false)
-    expect(getState()[ACTION_NAME].touched).not.toBe(null)
-
-    return promise.then(() => {
-      expect(getState().isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isError).toBe(false)
-
-      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses.GET)
-      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses.GET)
-    })
+    return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME)
   })
 
   it('success "find" action call', () => {
@@ -119,24 +109,9 @@ describe('updates state properly for ', () => {
 
     const SERVICE_NAME = 'simple'
     const ACTION_NAME = 'find'
+    const METHOD_NAME = 'GET'
 
-    const getState = () => store.getState()[SERVICE_NAME]
-
-    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME]())
-
-    expect(getState().isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isError).toBe(false)
-    expect(getState()[ACTION_NAME].touched).not.toBe(null)
-
-    return promise.then(() => {
-      expect(getState().isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isError).toBe(false)
-
-      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses.GET)
-      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses.GET)
-    })
+    return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME)
   })
 
   it('success "update" action call', () => {
@@ -144,24 +119,9 @@ describe('updates state properly for ', () => {
 
     const SERVICE_NAME = 'simple'
     const ACTION_NAME = 'update'
+    const METHOD_NAME = 'PUT'
 
-    const getState = () => store.getState()[SERVICE_NAME]
-
-    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME]())
-
-    expect(getState().isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isError).toBe(false)
-    expect(getState()[ACTION_NAME].touched).not.toBe(null)
-
-    return promise.then(() => {
-      expect(getState().isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isError).toBe(false)
-
-      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses.PUT)
-      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses.PUT)
-    })
+    return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME)
   })
 
   it('success "delete" action call', () => {
@@ -169,24 +129,9 @@ describe('updates state properly for ', () => {
 
     const SERVICE_NAME = 'simple'
     const ACTION_NAME = 'delete'
+    const METHOD_NAME = 'DELETE'
 
-    const getState = () => store.getState()[SERVICE_NAME]
-
-    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME]())
-
-    expect(getState().isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isError).toBe(false)
-    expect(getState()[ACTION_NAME].touched).not.toBe(null)
-
-    return promise.then(() => {
-      expect(getState().isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isError).toBe(false)
-
-      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses.DELETE)
-      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses.DELETE)
-    })
+    return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME)
   })
 
   it('success "get" action call with one param', () => {
@@ -195,24 +140,9 @@ describe('updates state properly for ', () => {
     const SERVICE_NAME = 'simpleWithId'
     const ACTION_NAME = 'get'
     const PARAMS = { id: 123 }
+    const METHOD_NAME = 'GET'
 
-    const getState = () => store.getState()[SERVICE_NAME]
-
-    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME](PARAMS))
-
-    expect(getState().isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isError).toBe(false)
-    expect(getState()[ACTION_NAME].touched).not.toBe(null)
-
-    return promise.then(() => {
-      expect(getState().isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isError).toBe(false)
-
-      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses[ACTION_NAME.toUpperCase()])
-      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses[ACTION_NAME.toUpperCase()])
-    })
+    return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME, PARAMS)
   })
 
   it('success "get" action call with two params', () => {
@@ -221,24 +151,9 @@ describe('updates state properly for ', () => {
     const SERVICE_NAME = 'simpleWithIdAndOtherParam'
     const ACTION_NAME = 'get'
     const PARAMS = { id: 123, 'other-param': 'other-value' }
+    const METHOD_NAME = 'GET'
 
-    const getState = () => store.getState()[SERVICE_NAME]
-
-    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME](PARAMS))
-
-    expect(getState().isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isError).toBe(false)
-    expect(getState()[ACTION_NAME].touched).not.toBe(null)
-
-    return promise.then(() => {
-      expect(getState().isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isError).toBe(false)
-
-      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses[ACTION_NAME.toUpperCase()])
-      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses[ACTION_NAME.toUpperCase()])
-    })
+    return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME, PARAMS)
   })
 
   it('success "get" action call with query string', () => {
@@ -247,24 +162,9 @@ describe('updates state properly for ', () => {
     const SERVICE_NAME = 'simpleWithQueryString'
     const ACTION_NAME = 'get'
     const PARAMS = { id: 123, 'other-param': 'other-value' }
+    const METHOD_NAME = 'GET'
 
-    const getState = () => store.getState()[SERVICE_NAME]
-
-    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME](PARAMS))
-
-    expect(getState().isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isError).toBe(false)
-    expect(getState()[ACTION_NAME].touched).not.toBe(null)
-
-    return promise.then(() => {
-      expect(getState().isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isError).toBe(false)
-
-      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses[ACTION_NAME.toUpperCase()])
-      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses[ACTION_NAME.toUpperCase()])
-    })
+    return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME, PARAMS)
   })
 
   it('success "get" action call with query string and param', () => {
@@ -273,24 +173,9 @@ describe('updates state properly for ', () => {
     const SERVICE_NAME = 'simpleWithIdAndQueryString'
     const ACTION_NAME = 'get'
     const PARAMS = { id: 123, 'other-param': 'other-value' }
+    const METHOD_NAME = 'GET'
 
-    const getState = () => store.getState()[SERVICE_NAME]
-
-    const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME](PARAMS))
-
-    expect(getState().isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isLoading).toBe(true)
-    expect(getState()[ACTION_NAME].isError).toBe(false)
-    expect(getState()[ACTION_NAME].touched).not.toBe(null)
-
-    return promise.then(() => {
-      expect(getState().isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isLoading).toBe(false)
-      expect(getState()[ACTION_NAME].isError).toBe(false)
-
-      expect(getState()[ACTION_NAME].data).toEqual(mockEndpoints[SERVICE_NAME].responses[ACTION_NAME.toUpperCase()])
-      expect(getState()[ACTION_NAME].rawData).toEqual(mockEndpoints[SERVICE_NAME].responses[ACTION_NAME.toUpperCase()])
-    })
+    return dispatchActionAndCheckStateChanges(SERVICE_NAME, ACTION_NAME, METHOD_NAME, PARAMS)
   })
 
 })
