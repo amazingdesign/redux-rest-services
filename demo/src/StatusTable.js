@@ -2,7 +2,7 @@ import React from 'react'
 
 import { connect } from 'react-redux'
 
-import { crudActionsDeclarations } from 'src/'
+import { crudActionsDeclarations } from 'redux-rest-services'
 
 const actionNames = crudActionsDeclarations.map(declaration => declaration.name)
 

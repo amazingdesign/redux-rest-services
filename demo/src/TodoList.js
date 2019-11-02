@@ -7,9 +7,11 @@ import restServices from './restServices'
 const TodoList = (props) => {
   const [newTaskText, setNewTaskText] = useState('')
 
+  const { find } = props
+
   useEffect(() => {
-    props.find()
-  }, [])
+    find()
+  }, [find])
 
   return (
     <div>

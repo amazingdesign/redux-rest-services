@@ -1,4 +1,4 @@
-import makeRestServices, { crudActionsDeclarations } from 'src/'
+import makeRestServices, { crudActionsDeclarations } from 'redux-rest-services'
 
 // this function maps an object into array of objects
 // and puts object keys into key property of array items
