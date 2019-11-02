@@ -4,12 +4,12 @@ export const STATES = ['START_FETCHING', 'STOP_FETCHING', 'ERROR', 'RECEIVES_DAT
 export const SERVICE_INITIAL_STATE = {
   isLoading: false,
   isError: false,
-  error: null,
   touched: null,
 }
 export const ACTION_INITIAL_STATE = {
   isLoading: false,
   isError: false,
+  error: null,
   touched: null,
   data: null,
   rawData: null,
