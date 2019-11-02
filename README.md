@@ -1,3 +1,6 @@
+[![Test Coverage](https://api.codeclimate.com/v1/badges/d58763c3cba4d9f5293c/test_coverage)](https://codeclimate.com/github/amazingdesign/redux-rest-services/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/d58763c3cba4d9f5293c/maintainability)](https://codeclimate.com/github/amazingdesign/redux-rest-services/maintainability)
+
 # redux-rest-services
 
 ## Demo
@@ -167,3 +170,7 @@ So YES, you can call `GET` to obtain data and then `POST` to add new, and you wi
   }
 }
 ```
+
+## Inspiration
+
+This package would never appeared without inspiring by [feathers-redux](https://github.com/feathers-plus/feathers-redux) and [redux-api](https://github.com/lexich/redux-api).
