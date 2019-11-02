@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "jest --all",
+    "test": "jest --coverage &&  ./cc-test-reporter format-coverage -t lcov coverage/lcov.info && ./cc-test-reporter upload-coverage -r 1fd91f489899d2088d44a14da8f7e25a933123cd58e81bec0ea1b2bcd3332638",
     "test:watch": "jest --watchAll"
   },
   "author": "",
