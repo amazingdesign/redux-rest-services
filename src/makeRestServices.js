@@ -29,6 +29,10 @@ const schema = {
         name: { type: 'slug' },
         url: { type: "url" },
         transformer: { type: 'function', optional: true },
+        onError: { type: 'function', optional: true },
+        onStartFetching: { type: 'function', optional: true },
+        onStopFetching: { type: 'function', optional: true },
+        onReceivesData: { type: 'function', optional: true },
         actionsDeclarations: {
           type: 'array',
           items: {

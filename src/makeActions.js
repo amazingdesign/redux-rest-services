@@ -5,6 +5,7 @@ import replaceParamsInURL from './replaceParamsInURL'
 const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionDeclaration, syncActionsForActionDeclaration, fetchFunction) => {
   return (params, fetchOptions) => (dispatch, getState) => {
     dispatch(syncActionsForActionDeclaration.START_FETCHING())
+    serviceDeclaration.onStartFetching && serviceDeclaration.onStartFetching(actionDeclaration)
 
     const actionDeclarationWithoutName = Object.entries(actionDeclaration).reduce(
       (r, [key, val]) => key !== 'name' ? { ...r, [key]: val } : r,
@@ -37,13 +38,16 @@ const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionD
           data = transformer(rawData, actionDeclaration)
         }
         dispatch(syncActionsForActionDeclaration.RECEIVES_DATA(data, rawData))
+        serviceDeclaration.onReceivesData && serviceDeclaration.onReceivesData(actionDeclaration)
       })
       .catch((error) => {
         dispatch(syncActionsForActionDeclaration.ERROR(error))
+        serviceDeclaration.onError && serviceDeclaration.onError(actionDeclaration)
         return Promise.reject(error)
       })
       .finally(() => {
         dispatch(syncActionsForActionDeclaration.STOP_FETCHING())
+        serviceDeclaration.onStopFetching && serviceDeclaration.onStopFetching(actionDeclaration)
       })
 
   }
