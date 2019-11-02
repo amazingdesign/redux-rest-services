@@ -1,5 +1,11 @@
 # redux-rest-services
 
+## Demo
+
+[Simple todo list + store props table with React](https://redux-rest-services.firebaseapp.com/)
+
+[The same demo on CodeSandbox - play with it!](https://codesandbox.io/s/github/amazingdesign/redux-rest-services/tree/master/demo)
+
 ## What for?
 
 To minimize boilerplate code with redux async HTTP request, but preserve elastic possibilities of use.
