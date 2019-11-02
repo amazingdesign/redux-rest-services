@@ -2,11 +2,11 @@
   "name": "redux-rest-services",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "jest --watch"
+    "test": "jest --watchAll"
   },
   "author": "",
   "license": "MIT",
