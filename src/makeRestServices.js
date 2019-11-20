@@ -8,6 +8,8 @@ import makeActionTypes from './makeActionTypes'
 import makeSyncActions from './makeSyncActions'
 import defaultFetchAdapter from './defaultFetchAdapter'
 
+export const instances = []
+
 const v = new Validator()
 
 v.add('slug', value => {
@@ -48,7 +50,7 @@ const schema = {
   }
 }
 
-export default (servicesDeclarations, fetchFunction = defaultFetchAdapter(fetch)) => {
+export const makeRestServices = (servicesDeclarations, fetchFunction = defaultFetchAdapter(fetch)) => {
   if (Array.isArray(servicesDeclarations) && servicesDeclarations.length === 0) {
     throw new Error()
   }
@@ -62,10 +64,16 @@ export default (servicesDeclarations, fetchFunction = defaultFetchAdapter(fetch)
   const actionTypes = makeActionTypes(servicesDeclarations)
   const syncActions = makeSyncActions(servicesDeclarations, actionTypes)
 
-  return {
+  const instance = {
     actionTypes: actionTypes,
     syncActions: syncActions,
     actions: makeActions(servicesDeclarations, actionTypes, syncActions, fetchFunction),
     reducers: makeReducers(servicesDeclarations, actionTypes),
   }
+
+  instances.push(instance)
+
+  return instance
 }
+
+export default makeRestServices

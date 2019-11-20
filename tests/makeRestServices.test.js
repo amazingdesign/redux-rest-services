@@ -1,5 +1,31 @@
-import makeRestServices, { crudActionsDeclarations, options} from '../src/index'
+import { makeRestServices, crudActionsDeclarations, options, instances } from '../src/index'
 import mockEndpoints from './mockEndpoints'
+
+describe('exposing instances works', () => {
+  const servicesDeclarations = [{
+    name: 'first',
+    url: mockEndpoints.simple.URL,
+    actionsDeclarations: crudActionsDeclarations,
+  }]
+
+  it('first instance is accessible', () => {
+    const instance = makeRestServices(servicesDeclarations)
+
+    expect(instance).toBe(instances[0])
+  })
+  it('second instance is accessible', () => {
+    const instance = makeRestServices(servicesDeclarations)
+
+    expect(instance).toBe(instances[1])
+  })
+  it('third instance is not first or second', () => {
+    const instance = makeRestServices(servicesDeclarations)
+
+    expect(instance).not.toBe(instances[0])
+    expect(instance).not.toBe(instances[1])
+    expect(instance).toBe(instances[2])
+  })
+})
 
 describe('making rest services declarations', () => {
 
@@ -72,3 +98,4 @@ describe('making rest services declarations', () => {
   })
 
 })
+
