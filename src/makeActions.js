@@ -39,10 +39,13 @@ const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionD
         }
         dispatch(syncActionsForActionDeclaration.RECEIVES_DATA(data, rawData))
         serviceDeclaration.onReceivesData && serviceDeclaration.onReceivesData(actionDeclaration)
+
+        return data
       })
       .catch((error) => {
         dispatch(syncActionsForActionDeclaration.ERROR(error))
         serviceDeclaration.onError && serviceDeclaration.onError(actionDeclaration)
+        
         return Promise.reject(error)
       })
       .finally(() => {
