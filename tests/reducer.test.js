@@ -10,11 +10,21 @@ const restServices = makeRestServices(
       url: mockEndpoints.simple.URL,
       transformer: (data) => data,
       actionsDeclarations: crudActionsDeclarations,
+    },
+    {
+      name: 'simple2',
+      url: mockEndpoints.simple.URL,
+      transformer: (data) => data,
+      actionsDeclarations: [ {
+        name: 'get',
+        method: 'GET',
+      }],
     }
   ]
 )
 
 const reducer = restServices.reducers.simple
+const reducer2 = restServices.reducers.simple2
 
 // TESTS
 
@@ -28,6 +38,17 @@ describe('reducer', () => {
         {}
       )
     })
+  })
+
+  it('should not fail if certain reduced didnt handle all actions available', () => {
+    const callAllReducersWithActionOnlyAvailabeInOneOfThem = () => {
+      const action = restServices.syncActions.simple.create.START_FETCHING()
+      
+      reducer({}, action)
+      reducer2({}, action)
+    }
+
+    expect(callAllReducersWithActionOnlyAvailabeInOneOfThem).not.toThrow()
   })
 
 })

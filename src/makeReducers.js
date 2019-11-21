@@ -23,7 +23,15 @@ const makeReducer = (serviceDeclaration, actionTypesForService) => {
       return state
     }
 
+    // certain reducer haven't to handle all actions
+    // if action is not handle by this reducer, skip
+    if (!actionTypesForService[actionName]) {
+      // @TODO - log error in error reducer maybe
+      return state
+    }
+
     let newActionState = null
+
 
     switch (action.type) {
       case actionTypesForService[actionName].START_FETCHING:
@@ -36,7 +44,7 @@ const makeReducer = (serviceDeclaration, actionTypesForService) => {
             touched: action.timestamp,
           }
         }
-        return calculateServiceState({...state, ...newActionState})
+        return calculateServiceState({ ...state, ...newActionState })
       case actionTypesForService[actionName].STOP_FETCHING:
         newActionState = {
           [actionName]: {
@@ -45,7 +53,7 @@ const makeReducer = (serviceDeclaration, actionTypesForService) => {
             touched: action.timestamp,
           }
         }
-        return calculateServiceState({...state, ...newActionState})
+        return calculateServiceState({ ...state, ...newActionState })
       case actionTypesForService[actionName].RECEIVES_DATA:
         newActionState = {
           [actionName]: {
@@ -55,7 +63,7 @@ const makeReducer = (serviceDeclaration, actionTypesForService) => {
             touched: action.timestamp,
           }
         }
-        return calculateServiceState({...state, ...newActionState})
+        return calculateServiceState({ ...state, ...newActionState })
       case actionTypesForService[actionName].ERROR:
         newActionState = {
           [actionName]: {
@@ -66,7 +74,7 @@ const makeReducer = (serviceDeclaration, actionTypesForService) => {
             touched: action.timestamp,
           }
         }
-        return calculateServiceState({...state, ...newActionState})
+        return calculateServiceState({ ...state, ...newActionState })
       default:
         return state
     }
