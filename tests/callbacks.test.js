@@ -47,6 +47,10 @@ const store = createStore(
   applyMiddleware(thunk)
 )
 
+// @HACK to obtain dispatch and getState that thunk uses
+// its apparently not === same functions as store.dispatch and store.getState
+const { dispatch: thunkDispatch, getState: thunkGetState } = store.dispatch((dispatch, getState) => ({ dispatch, getState }))
+
 // TESTS
 
 describe('calling defined callbacks', () => {
@@ -62,13 +66,13 @@ describe('calling defined callbacks', () => {
     const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME](PARAMS))
 
     expect(onStartFetching).toHaveBeenCalledTimes(1)
-    expect(onStartFetching).toHaveBeenLastCalledWith(ACTION_DECLARATION)
+    expect(onStartFetching).toHaveBeenLastCalledWith(ACTION_DECLARATION, thunkDispatch, thunkGetState)
 
-    return promise.then(() => { 
+    return promise.then(() => {
       expect(onReceivesData).toHaveBeenCalledTimes(1)
-      expect(onReceivesData).toHaveBeenLastCalledWith(ACTION_DECLARATION)
+      expect(onReceivesData).toHaveBeenLastCalledWith(ACTION_DECLARATION, thunkDispatch, thunkGetState)
       expect(onStopFetching).toHaveBeenCalledTimes(1)
-      expect(onStopFetching).toHaveBeenLastCalledWith(ACTION_DECLARATION)
+      expect(onStopFetching).toHaveBeenLastCalledWith(ACTION_DECLARATION, thunkDispatch, thunkGetState)
     })
   })
 
@@ -83,13 +87,13 @@ describe('calling defined callbacks', () => {
     const promise = store.dispatch(restServices.actions[SERVICE_NAME][ACTION_NAME](PARAMS))
 
     expect(onStartFetching).toHaveBeenCalledTimes(2) // 2 because of prev test
-    expect(onStartFetching).toHaveBeenLastCalledWith(ACTION_DECLARATION)
+    expect(onStartFetching).toHaveBeenLastCalledWith(ACTION_DECLARATION, thunkDispatch, thunkGetState)
 
-    return promise.catch(() => { 
+    return promise.catch(() => {
       expect(onError).toHaveBeenCalledTimes(1) // no error in prev test
-      expect(onError).toHaveBeenLastCalledWith(ACTION_DECLARATION)
+      expect(onError).toHaveBeenLastCalledWith(ACTION_DECLARATION, thunkDispatch, thunkGetState)
       expect(onStopFetching).toHaveBeenCalledTimes(2) // 2 because of prev test
-      expect(onStopFetching).toHaveBeenLastCalledWith(ACTION_DECLARATION)
+      expect(onStopFetching).toHaveBeenLastCalledWith(ACTION_DECLARATION, thunkDispatch, thunkGetState)
     })
   })
 

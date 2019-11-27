@@ -5,7 +5,7 @@ import replaceParamsInURL from './replaceParamsInURL'
 const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionDeclaration, syncActionsForActionDeclaration, fetchFunction) => {
   return (params, fetchOptions) => (dispatch, getState) => {
     dispatch(syncActionsForActionDeclaration.START_FETCHING())
-    serviceDeclaration.onStartFetching && serviceDeclaration.onStartFetching(actionDeclaration)
+    serviceDeclaration.onStartFetching && serviceDeclaration.onStartFetching(actionDeclaration, dispatch, getState)
 
     const actionDeclarationWithoutName = Object.entries(actionDeclaration).reduce(
       (r, [key, val]) => key !== 'name' ? { ...r, [key]: val } : r,
@@ -38,19 +38,19 @@ const makeAction = (serviceDeclaration, actionDeclaration, actionTypesForActionD
           data = transformer(rawData, actionDeclaration)
         }
         dispatch(syncActionsForActionDeclaration.RECEIVES_DATA(data, rawData))
-        serviceDeclaration.onReceivesData && serviceDeclaration.onReceivesData(actionDeclaration)
+        serviceDeclaration.onReceivesData && serviceDeclaration.onReceivesData(actionDeclaration, dispatch, getState)
 
         return data
       })
       .catch((error) => {
         dispatch(syncActionsForActionDeclaration.ERROR(error))
-        serviceDeclaration.onError && serviceDeclaration.onError(actionDeclaration)
+        serviceDeclaration.onError && serviceDeclaration.onError(actionDeclaration, dispatch, getState)
         
         return Promise.reject(error)
       })
       .finally(() => {
         dispatch(syncActionsForActionDeclaration.STOP_FETCHING())
-        serviceDeclaration.onStopFetching && serviceDeclaration.onStopFetching(actionDeclaration)
+        serviceDeclaration.onStopFetching && serviceDeclaration.onStopFetching(actionDeclaration, dispatch, getState)
       })
 
   }
