@@ -9,6 +9,7 @@ import makeSyncActions from './makeSyncActions'
 import defaultFetchAdapter from './defaultFetchAdapter'
 
 export const instances = []
+export const getInstances = () => instances
 
 const v = new Validator()
 
